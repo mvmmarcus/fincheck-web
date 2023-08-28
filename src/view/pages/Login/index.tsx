@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { useLoginController } from "./useLoginController";
 
 export function LoginPage() {
+  const { handleFormSubmit, register, errors, isLoading } =
+    useLoginController();
+
   return (
     <>
       <header className="text-center flex flex-col items-center justify-center gap-4">
@@ -22,10 +26,23 @@ export function LoginPage() {
           </Link>
         </p>
       </header>
-      <form className="mt-[60px] flex flex-col gap-4">
-        <Input name="email" type="email" placeholder="E-mail" />
-        <Input name="password" type="password" placeholder="Senha" />
-        <Button className="mt-2" type="submit">
+      <form
+        onSubmit={handleFormSubmit}
+        className="mt-[60px] flex flex-col gap-4"
+      >
+        <Input
+          type="email"
+          placeholder="E-mail"
+          {...register("email")}
+          error={errors.email?.message}
+        />
+        <Input
+          type="password"
+          placeholder="Senha"
+          {...register("password")}
+          error={errors.password?.message}
+        />
+        <Button className="mt-2" type="submit" isLoading={isLoading}>
           Entrar
         </Button>
       </form>
